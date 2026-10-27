@@ -1,0 +1,10 @@
+# Generated files and local credentials
+android/build/
+android/.gradle/
+android/local.properties
+*.jks
+*.keystore
+*.p12
+*.idsig
+web/dist/tetris/
+node_modules/

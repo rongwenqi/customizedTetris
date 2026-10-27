@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="theme-color" content="#0b121f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="文奇方块">
+ <meta name="description" content="文奇俄罗斯方块：恒速下落、落点预览、软降与硬降。支持添加到 iPhone 主屏幕，游戏数据保存在本机。">
+ <title>文奇俄罗斯方块</title><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon-192.png"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css?v=6">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+ <symbol id="restart-icon" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 7M3 4v6h6"/></symbol>
+ <symbol id="records-icon" viewBox="0 0 24 24"><path d="M4 20V12h3v8M10.5 20V7h3v13M17 20V3h3v17"/></symbol>
+ <symbol id="theme-icon" viewBox="0 0 36 24"><g stroke-width="1.6"><circle cx="8" cy="12" r="3.3"/><path d="M8 5V3M8 21v-2M1 12h2M13 12h2M3.1 7.1 1.7 5.7M12.9 7.1l1.4-1.4M3.1 16.9l-1.4 1.4M12.9 16.9l1.4 1.4"/><path d="M27 4a8 8 0 1 0 6 13 7 7 0 0 1-6-13Z"/></g></symbol>
+ <symbol id="settings-icon" viewBox="0 0 24 24"><path d="m9 3-.7 2.3-2 .9L4 5.5l-2 3.4 1.8 1.7v2.8L2 15.1l2 3.4 2.3-.7 2 .9L9 21h4l.7-2.3 2-.9 2.3.7 2-3.4-1.8-1.7v-2.8L20 8.9l-2-3.4-2.3.7-2-.9L13 3Z"/><circle cx="11" cy="12" r="3"/></symbol>
+ <symbol id="play-icon" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+ <symbol id="pause-icon" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+ <symbol id="left-icon" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></symbol>
+ <symbol id="right-icon" viewBox="0 0 24 24"><path d="m10 5 7 7-7 7"/></symbol>
+ <symbol id="rotate-icon" viewBox="0 0 24 24"><path d="M20 9a8 8 0 1 0 0 6M20 3v6h-6"/></symbol>
+ <symbol id="soft-icon" viewBox="0 0 24 24"><path d="M12 3v16m-7-6 7 7 7-7"/></symbol>
+ <symbol id="hard-icon" viewBox="0 0 24 24"><path d="m5 4 7 6 7-6M5 11l7 6 7-6M4 22h16"/></symbol>
+ <symbol id="share-icon" viewBox="0 0 24 24"><path d="M7 9H4v12h16V9h-3M12 15V2m-5 5 5-5 5 5"/></symbol>
+</defs></svg>
+<main class="app" aria-label="文奇俄罗斯方块">
+ <header class="toolbar">
+  <div class="speed-badge"><span><i></i>恒速下落</span><strong id="speed-readout">0.7 秒 / 格</strong></div>
+  <button class="tool" id="restart" aria-label="重新开始" title="重新开始"><svg><use href="#restart-icon"/></svg><small>重开</small></button>
+  <button class="tool" id="records" aria-label="数据记录" title="数据记录"><svg><use href="#records-icon"/></svg><small>记录</small></button>
+  <button class="tool theme" id="theme" aria-label="切换亮色模式" title="明暗模式切换"><svg><use href="#theme-icon"/></svg></button>
+  <button class="tool" id="settings" aria-label="设置" title="设置"><svg><use href="#settings-icon"/></svg></button>
+ </header>
+ <section class="play-area" aria-label="游戏区">
+  <div class="board-wrap"><canvas id="board" aria-label="10列20行俄罗斯方块棋盘"></canvas><button id="overlay" class="overlay"><span class="overlay-title">准备好了吗</span><span class="overlay-detail">每一格，都从容</span><span class="overlay-hint">轻点开始</span></button></div>
+  <aside class="sidebar">
+   <div class="metrics"><div><span>得分</span><strong id="score">0</strong></div><div><span>本局消行</span><strong id="lines">0</strong></div><div><span>最高分</span><strong id="best">0</strong></div><div class="next"><span>下一个</span><canvas id="next" width="144" height="108" aria-label="下一个方块"></canvas></div></div>
+   <div class="pause-wrap"><button id="pause" class="pause" aria-label="开始游戏"><svg><use id="pause-use" href="#play-icon"/></svg></button><span id="pause-label">开始 / 继续</span></div>
+  </aside>
+ </section>
+ <section class="controls" aria-label="游戏操作">
+  <button data-action="soft"><svg><use href="#soft-icon"/></svg><span>软降</span></button>
+  <button data-action="left"><svg><use href="#left-icon"/></svg><span>左移</span></button>
+  <button data-action="right"><svg><use href="#right-icon"/></svg><span>右移</span></button>
+  <button data-action="hard"><svg><use href="#hard-icon"/></svg><span>硬降</span></button>
+  <button data-action="rotate"><svg><use href="#rotate-icon"/></svg><span>旋转</span></button>
+ </section>
+ <footer><span id="offline-state">文奇方块 · 网页版</span><button id="install"><svg><use href="#share-icon"/></svg>添加到桌面</button></footer>
+</main>
+<dialog id="settings-dialog" aria-labelledby="settings-title"><form method="dialog"><div class="dialog-head"><h1 id="settings-title">设置</h1><button class="close" value="cancel" aria-label="关闭设置">×</button></div><label class="range-label" for="speed-slider">下落速度<strong id="slider-value">0.7 秒 / 格</strong></label><input id="speed-slider" type="range" min="1" max="20" step="1" value="7"><div class="range-ends"><span>快 · 0.1 秒</span><span>慢 · 2.0 秒</span></div><p class="subtle">每次调整 0.1 秒，整局不会自动加速。</p><h2 class="indented">说明</h2><p class="indented">1.本软件从未进行收费，可以到QQ群1095699226下载。</p><p class="indented">2.本游戏开发主要目的为利用《俄罗斯方块》改善侵入性记忆以及PTSD，所以设置为恒定速度。</p><div class="dialog-actions"><button value="cancel">取消</button><button value="save" class="primary">保存设置</button></div></form></dialog>
+<dialog id="records-dialog" aria-labelledby="records-title"><form method="dialog"><div class="dialog-head"><h1 id="records-title">数据记录</h1><button class="close" aria-label="关闭数据记录">×</button></div><div class="record-grid"><div><span>最高分</span><strong id="record-best">0</strong></div><div><span>历史消行总数</span><strong id="record-lines">0</strong></div><div><span>已开始局数</span><strong id="record-games">0</strong></div></div><p class="subtle">记录保存在当前设备。开始新局计一次，暂停续玩不重复计数；清除网站数据会清除记录。</p><button class="primary wide">关闭</button></form></dialog>
+<dialog id="restart-dialog" aria-labelledby="restart-title"><form method="dialog"><div class="dialog-head"><h1 id="restart-title">重新开始？</h1></div><p>当前棋盘进度会清除，最高分和累计消行会保留。</p><div class="dialog-actions"><button value="cancel">保留进度</button><button value="restart" class="primary">重新开始</button></div></form></dialog>
+<dialog id="install-dialog" aria-labelledby="install-title"><form method="dialog"><div class="dialog-head"><h1 id="install-title">把方块放进口袋</h1><button class="close" aria-label="关闭安装说明">×</button></div><p>添加到桌面后，可以从图标直接打开。</p><ol><li>用 <strong>Safari 浏览器</strong>打开本页。</li><li>点击分享按钮 <svg class="inline-icon"><use href="#share-icon"/></svg>，选择<strong>“添加到主屏幕”</strong>。</li><li>如果显示“作为网页 App 打开”，请保持开启，再点击“添加”。</li></ol><p class="subtle">首次联网打开并显示“已可离线游玩”后，即可离线使用。网页版与安卓 App 的存档相互独立。</p><button id="native-install" type="button" class="primary wide" hidden>安装到此设备</button><button class="wide">知道了</button></form></dialog>
+<div id="toast" role="status" aria-live="polite"></div><script type="module" src="./app.mjs"></script>
+</body></html>
